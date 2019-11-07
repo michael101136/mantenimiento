@@ -49,7 +49,7 @@ class EquipoPrincipal extends Controller
                     ->leftjoin('marcas','marcas.id','=','equipo.id_marca')
                     ->leftjoin('tipo_equipos', 'tipo_equipos.id', '=', 'marcas.id_tipo_equipo')
                     ->leftjoin('areas', 'areas.id', '=', 'equipo.id_area')
-                ->get();
+                ->paginate(50);
         
       
 

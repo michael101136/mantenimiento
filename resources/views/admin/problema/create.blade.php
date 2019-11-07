@@ -148,10 +148,12 @@
                                 <th>CODIGO</th>
                                 <th>EMPRESA</th>
                                 <th>TIENDA</th>
+                                <th>CATEGORIA</th>
                                  <th>ÁREA</th>
-                                 <th>TIPO EQUIPO</th>
-                                    <th>MARCA</th>
-                                <th>SERIE</th>
+                               <!--   <th>TIPO EQUIPO</th> -->
+                                 <th>DESCRIPCIÓN</th>
+                                    <!-- <th>MARCA</th>
+                                <th>SERIE</th> -->
                               </tr>
                           </thead>
                         </table>
@@ -194,10 +196,12 @@
                                 { data: 'codigo', name: 'codigo' },
                                 { data: 'empresa', name: 'empresa' },
                                 { data: 'tienda', name: 'tienda' },
+                                { data: 'partida', name: 'partida' },
                                 { data: 'area', name: 'area' },
-                                { data: 'tipoequipo', name: 'tipoequipo' },
-                                 { data: 'marca', name: 'marca' },
-                                { data: 'serie', name: 'serie' },
+                                // { data: 'tipoequipo', name: 'tipoequipo' },
+                                { data: 'descripcion', name: 'descripcion' },
+                                // { data: 'marca', name: 'marca' },
+                                // { data: 'serie', name: 'serie' },
                              ]
                              
                     });
@@ -205,7 +209,7 @@
                 $('#listar_Usuario tbody').on('click', 'tr', function () {
                     var data = table.row( this ).data();
                     $("#id_equipo").val(data['id']);
-                    $("#textEquipo").html(data['tipoequipo']);
+                    $("#textEquipo").html(data['descripcion']);
                    $('#modalBuscarEquipo').modal('hide');   
                     // alert( 'You clicked on '+data['id']+'\'s row' );
                 } );

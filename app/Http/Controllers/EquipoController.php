@@ -44,14 +44,14 @@ class EquipoController extends AppBaseController
         // $equipo = $this->equipoRepository->all();
 
          $equipo =DB::table('categoria_tienda')
-                   ->select('equipo.idequipo as codigo','equipo.id','equipo.descripcion','tiendas.nombre as tienda','empresas.nombre as empresa','equipo.serie','areas.nombre as area','tipo_equipos.descripcion as tipoequipo','marcas.descripcion as marca')
-                    ->join('ubigeo_tienda','ubigeo_tienda.id','=','categoria_tienda.id_tienda')
-                    ->join('equipo','categoria_tienda.id','=','equipo.id_categoria_tienda')
-                    ->join('tiendas','tiendas.id','=','ubigeo_tienda.id_tienda')
-                    ->join('categorias','categorias.id','=','categoria_tienda.id_categoria')
-                     ->join('areas','areas.id','=','equipo.id_area')
-                    ->join('empresas','empresas.id','=','tiendas.id_empresa')
-                    ->join('marcas','marcas.id','=','equipo.id_marca')
+                   ->select('equipo.idequipo as codigo','equipo.id','equipo.descripcion','tiendas.nombre as tienda','empresas.nombre as empresa','equipo.serie','areas.nombre as area','tipo_equipos.descripcion as tipoequipo','marcas.descripcion as marca','categorias.descripcion as partida')
+                    ->leftjoin('ubigeo_tienda','ubigeo_tienda.id','=','categoria_tienda.id_tienda')
+                    ->leftjoin('equipo','categoria_tienda.id','=','equipo.id_categoria_tienda')
+                    ->leftjoin('tiendas','tiendas.id','=','ubigeo_tienda.id_tienda')
+                    ->leftjoin('categorias','categorias.id','=','categoria_tienda.id_categoria')
+                    ->leftjoin('areas','areas.id','=','equipo.id_area')
+                    ->leftjoin('empresas','empresas.id','=','tiendas.id_empresa')
+                    ->leftjoin('marcas','marcas.id','=','equipo.id_marca')
                     ->leftjoin('tipo_equipos', 'tipo_equipos.id', '=', 'marcas.id_tipo_equipo')
                 ->get();
        
