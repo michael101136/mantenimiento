@@ -318,7 +318,6 @@ function busquedaFunction(titulo,opcion) {
            
            var id_empresa=$("#id_empresa").val();
           
-            
             var table=$('#listar_Usuario').DataTable({
                     "language": {
                       "url": "/admin/idioma/spanish.json"
@@ -341,7 +340,7 @@ function busquedaFunction(titulo,opcion) {
                              ]
                              
                     });
-                    
+                  table.ajax.reload();  
                 $('#listar_Usuario tbody').on('click', 'tr', function () {
                     var data = table.row( this ).data();
                     

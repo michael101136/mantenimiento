@@ -96,6 +96,7 @@ Route::get('/listar_ubigeoEmpresa/{id_empresa}', 'EmpresaController@listar_ubige
 Route::get('/listar_partida_Tienda/{id_tienda}', 'TiendaController@listar_partida_Tienda'); 
 Route::get('/eliminar_tienda_ubicacion/{id_tienda_ubicacion}', 'TiendaController@eliminar_tienda_ubicacion'); 
 Route::get('/listar_partida_all', 'EmpresaController@listar_partida_all'); 
+Route::get('/listar_partida_all_empresa_tienda', 'EmpresaController@listar_partida_all_empresa_tienda'); 
 Route:: POST('/saveUbigeoTienda', 
 [
 	'uses' => 'TiendaController@saveUbigeoTienda',
@@ -182,6 +183,7 @@ Route::get('/crearproblemas', [ 'uses' => 'ProblemaController@create' ])->name('
 //Mantenimiento preventivo
 Route::get('/listarticket', [ 'uses' => 'TicketController@index' ])->name('listarticket');
 Route::get('/crearticket', [ 'uses' => 'TicketController@create' ])->name('crearticket');
+Route::get('/EliminarPreventivo/{id?}', [ 'uses' => 'TicketController@EliminarPreventivo' ])->name('EliminarPreventivo');
 Route::resource('ticket','TicketController');
 //Fin mantenimiento preventivo
 

@@ -37,7 +37,7 @@
                  
                 <div class="x_panel">
                   <div class="x_title">
-                        <a href="{{('/crearticket')}}" class="btn btn-success "><i class="fa fa-plus-circle"> NUEVO   </i></a>
+                        <a href="{{('/crearticket')}}" class="btn btn-success "><i class="fa fa-plus-circle"> NUEVOss   </i></a>
                         <a href="{{('/pdfProblemas')}}" class="btn btn-success "><i class="fa fa-plus-circle"> REPORTE   </i></a>
                     <h2><small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
@@ -67,7 +67,7 @@
                       <thead style="background-color: #5A738E;color:#FFFFFF;">
                         <tr>
                     
-                            <th>CODIGO</th>
+                            <th>CODIGOs</th>
                             <th>DECRIPCION</th>
                             <th>FECHA</th>
                             <th>ACCION</th>

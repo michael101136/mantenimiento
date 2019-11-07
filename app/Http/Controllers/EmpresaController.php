@@ -243,6 +243,22 @@ class EmpresaController extends AppBaseController
             ->make(true); 
     }
     
+     public function listar_partida_all_empresa_tienda()
+    {
+       
+       
+         $categoria=DB::table('categoria_tienda')
+                   ->select('empresas.nombre as nombreEmpresa','tiendas.nombre as tiendaNombre','categoria_tienda.id','categorias.codigo','categorias.descripcion','ubigeo_tienda.direccion')
+                    ->join('ubigeo_tienda','ubigeo_tienda.id','=','categoria_tienda.id_tienda')
+                    ->join('tiendas','tiendas.id','=','ubigeo_tienda.id_tienda')
+                    ->join('categorias','categorias.id','=','categoria_tienda.id_categoria')
+                    ->join('empresas','empresas.id','=','tiendas.id_empresa')
+                ->get();
+         
+        return datatables()->of($categoria)
+            ->make(true); 
+    }
+
      public function savePartida(Request $request)
     {
      

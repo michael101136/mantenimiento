@@ -122,6 +122,40 @@ function eliminarTiendaUbigeo(id)
                 });
 
         }); 
+       $("#buscar_partida").click(function()
+        {
+             
+              
+              $('#modalBuscarPartida').modal('show');
+                var table=$('#table_listar_partido').DataTable({
+                    "language": {
+                      "url": "/admin/idioma/spanish.json"
+                    },
+                       processing: true,
+                       serverSide: true,
+                       destroy: true,
+                       ajax: "{{ url('listar_partida_all') }}",
+                       columns: [
+                                { data: 'id', name: 'id' },
+                                { data: 'codigo', name: 'codigo' },
+                                { data: 'descripcion', name: 'descripcion' }
+                             ]
+                             
+                    });
+                    
+                    $('#table_listar_partido tbody').on('click', 'tr', function () 
+                    {
+                        var data = table.row( this ).data();
+                        $('#modalBuscarPartida').modal('hide');
+                        $("#id_partida").val(data['id']);
+                        $("#partida").val(data['descripcion']+' - '+data['codigo']);
+                        
+                       
+                     } );
+                                        
+    
+        
+        });
 
        $(document).ready(function() {
              

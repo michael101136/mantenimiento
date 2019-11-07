@@ -49,32 +49,7 @@ class TicketController extends Controller
         }else
         {
            
-    //   $data=DB::table('categoria_tienda')
-    //                 ->select(DB::raw('CONCAT(tipo_equipos.descripcion, ", serie ", equipo.serie, ", marca ", marcas.descripcion) AS equipo'),'problema.id','problema.codigo','problema.problema','users.name','problema.fecharegistro','tiendas.nombre as tienda','empresas.nombre as empresa','areas.nombre as area')
-    //                 ->join('tiendas','tiendas.id','=','categoria_tienda.id_tienda')
-    //                 ->join('categorias','categorias.id','=','categoria_tienda.id_categoria')
-    //                 ->join('empresas','empresas.id','=','tiendas.id_empresa')
-    //                 ->join('equipo','categoria_tienda.id','=','equipo.id_categoria_tienda')
-    //                 ->join('marcas','marcas.id','=','equipo.id_marca')
-    //                 ->join('tipo_equipos', 'tipo_equipos.id', '=', 'marcas.id_tipo_equipo')
-    //                 ->leftjoin('areas','areas.id','=','equipo.id_area')
-    //                 ->join('problema', 'equipo.id', '=', 'problema.id_equipo')
-    //                 ->leftjoin('equipo_incidencia', 'problema.id', '=', 'equipo_incidencia.id_problema')
-    //                 ->join('users','users.id','=','problema.id_usuario')
-    //                 ->orderBy('problema.id','desc')
-    //                 ->get();
     
-            //  $data=DB::table('categoria_tienda')
-            //             ->select('incidencia_preventivos.id','tiendas.nombre as tienda','empresas.nombre as empresa','incidencia_preventivos.codigo','incidencia_preventivos.estado','categorias.descripcion as partida')
-            //             ->join('tiendas','tiendas.id','=','categoria_tienda.id_tienda')
-            //             ->join('categorias','categorias.id','=','categoria_tienda.id_categoria')
-            //             ->join('empresas','empresas.id','=','tiendas.id_empresa')
-            //             ->join('detalle_incidencia_preventivo','categoria_tienda.id','=','detalle_incidencia_preventivo.id_categoria_tienda')
-            //             ->join('incidencia_preventivos','incidencia_preventivos.id','=','detalle_incidencia_preventivo.incidencia_preventivos')
-            //             ->get();
-            
-            
-           
             $data=DB::table('incidencia_preventivos')
                             ->select('*','incidencia_preventivos.id as idIncidenciaPreventivo')
                             ->join('tipo_incidencias','tipo_incidencias.id','=','incidencia_preventivos.id_tipo_incidencia')
@@ -104,6 +79,7 @@ class TicketController extends Controller
                
             }
             
+
           
             return view('admin.preventivo.index',['data'=>$arrayPreventivo]); 
         }
@@ -139,6 +115,7 @@ class TicketController extends Controller
         $empresa=DB::table('empresas')
                       ->select('id','nombre')
                       ->get();
+
         return view('admin.preventivo.create',['maxCodigo'=>$maxCodigo,'fecha'=>$date,'empresa'=>$empresa]);
     }
 
@@ -188,6 +165,7 @@ class TicketController extends Controller
                  
                   DB::table('detalle_incidencia_preventivo')->insert(
                   [
+
                       
                       'incidencia_preventivos'  => $id_inciden,
                       'id_categoria_tienda'     => $id_tienda[$i],
@@ -219,96 +197,10 @@ class TicketController extends Controller
        
     }
     
-    public function storeImagen(Request $request)
-            {
-                
-               
-                
-                $file = $request->file('file');
-                $path =public_path().'/admin/problema';
-        
-                $fileName = uniqid() . $file->getClientOriginalName();
-        
-                $file->move($path, $fileName);
-        
-               
-        
-                 DB::table('imagen_problema')->insert([
-                    'id_problema' => $request->id,
-                    'url' => '/admin/problema'.'/'.$fileName
-                
-                ]);
-                
-             
-                	
-              
-             
-            } 
-    public function ordenServicioCreate(Request $request)
-    {
+    
 
-        // $user = Auth::user();
-
-        // DB::table('orden_servicio')->insert(
-        //         [
-
-        //         'codigo' => $request->codigo, 
-        //         'prioridad' => $request->prioridad,
-        //         'id_incidencia' =>$request->id_incidencia,
-        //         'id_tipo_mantenimiento' => $request->id_tipo_mantenimiento,
-        //         'estado' => $request->estado,
-        //         'fecha' => $request->fecha,
-        //         'descripcion'=>$request->descripcion,
-        //         'id_usuario'=>$user->id,
-        //         'id_usuario_supervisor'=>$request->id_usuario_supervisor
-        //         ]
-        //     );
-        
-        //     DB::table('equipo_incidencia')
-        //     	->where('id', '=', $request->id_incidencia)
-        //     	->update([
-        //     		'estado' => 'proceso',
-        //     	]);
-       
-        // $id=DB::table('orden_servicio')->max('id'); 
-
-        // return response(['id' => $id]);
-    }
-
-    public function BuscarOrdenServicios(Request $request)
-    {
-
-        $codigo=$request->codigo;
-
-        $resultado=DB::table('orden_servicio')
-                                ->select('orden_servicio.id','orden_servicio.estado','orden_servicio.fecha','orden_servicio.descripcion','orden_servicio.codigo', 'orden_servicio.codigo','orden_servicio.prioridad','equipo_incidencia.id as idIncidencia','equipo_incidencia.descripcion as incidenciaDes','tipo_mantenimientos.id as idMante','tipo_mantenimientos.descripcion as manteDes','orden_servicio.id_usuario_supervisor as id_usuario_supervisor')
-                                ->join('tipo_mantenimientos', 'tipo_mantenimientos.id', '=', 'orden_servicio.id_tipo_mantenimiento')
-                                ->join('equipo_incidencia', 'equipo_incidencia.id', '=', 'orden_servicio.id_incidencia')
-                                ->join('users', 'users.id', '=', 'orden_servicio.id_usuario')
-                                ->where('orden_servicio.codigo', $codigo)->get();
-
-         return response(['data' => $resultado]);
-    }
-
-    public function ordenServicioActualizar(Request $request)
-    {
-        $user = Auth::user();
-
-        DB::table('orden_servicio')
-            ->where('id', '=', $request->id)
-            ->update([
-                'codigo' => $request->codigo, 
-                'prioridad' => $request->prioridad,
-                'id_incidencia' =>$request->id_incidencia,
-                'id_tipo_mantenimiento' => $request->id_tipo_mantenimiento,
-                'estado' => $request->estado,
-                'fecha' => $request->fecha,
-                'descripcion'=>$request->descripcion,
-                'id_usuario'=>$user->id,
-                'id_usuario_supervisor'=>$request->id_usuario_supervisor
-            ]); 
-    }
-
+   
+   
       
     /**
      * Display the specified resource.
@@ -355,52 +247,15 @@ class TicketController extends Controller
         //
     }
 
-    public function listarTipoMantenimiento()
-    {
-        $data=DB::table('tipo_mantenimientos')
-                ->select('id','codigo','descripcion')
-                ->get();
-
-        return response(['data' => $data]);
-    }
-    public function listarTiendas()
-    {
-        $data=DB::table('tiendas')
-                ->select('id','codigo','nombre')
-                ->get();
-        
-        return response(['data' =>$data]);
-    }
     
-    public function pdflistarproblemas()
-    {
-        
-        $listar=DB::table('problema')
-        ->select('problema.codigo','problema.problema','problema.fecharegistro','users.name')
-        ->join('users','users.id','=','problema.id_usuario')
-        ->get();
-        
-        
-        $pdf = PDF::loadView('admin.reportes.inicio.problemas',compact('listar'));
-        return $pdf->stream('problemas.pdf');  
-    }
     
-    public function listarImagenes($id)
-    {
-        $data=DB::table('imagen_problema')
-        ->select('*')
-        ->where('id_problema','=',$id)
-        ->get();
-        
-        return response()->json(['data'=>$data]);
-    }
     
-    public function EliminarImagenes_problema($id)
+    public function EliminarPreventivo($id)
     {
             
 
-            
-            DB::table('imagen_problema')->where('id', '=', $id)->delete();
+            DB::table('detalle_incidencia_preventivo')->where('incidencia_preventivos', '=', $id)->delete();    
+            DB::table('incidencia_preventivos')->where('id', '=', $id)->delete();
             
             return response()->json(['data' => "Correcto"]);
 

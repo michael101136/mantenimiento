@@ -281,7 +281,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" id="busquedaTitulo" name="busquedaTitulo">BUSCAR PARTIDA </h4>
+          <h4 class="modal-title" id="busquedaTitulo" name="busquedaTitulo">BUSCAR PARTIDAS </h4>
         </div>
         <div class="modal-body">
        
@@ -290,8 +290,12 @@
                           <thead>
                               <tr>
                                 <th>ID</th>
+                                <th>EMPRESA</th>
+                                <th>TIENDA</th>
+                                <th>DIRECCIÓN</th>
                                 <th>CODIGO</th>
-                                <th>DESCRIPCION</th>
+                                <th>PARTIDA</th>
+
                               </tr>
                           </thead>
                         </table>
@@ -903,9 +907,12 @@ $(function()
                        processing: true,
                        serverSide: true,
                        destroy: true,
-                       ajax: "{{ url('listar_partida_all') }}",
+                       ajax: "{{ url('listar_partida_all_empresa_tienda') }}",
                        columns: [
                                 { data: 'id', name: 'id' },
+                                { data: 'nombreEmpresa', name: 'nombreEmpresa' },
+                                { data: 'tiendaNombre', name: 'tiendaNombre' },
+                                { data: 'direccion', name: 'direccion' },
                                 { data: 'codigo', name: 'codigo' },
                                 { data: 'descripcion', name: 'descripcion' }
                              ]

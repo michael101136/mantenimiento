@@ -40,14 +40,15 @@ class EquipoPrincipal extends Controller
         }
         
         $data=DB::table('categoria_tienda')
-                   ->select('equipo.id', 'equipo.idequipo','equipo.url', 'equipo.modelo','equipo.descripcion','marcas.descripcion as descripcionMarca','tiendas.nombre as tienda','equipo.estado_equipo','tipo_equipos.descripcion as descripcionTipoEquipo','equipo.serie','empresas.nombre as empresa','categorias.descripcion as desPartida')
-                    ->join('ubigeo_tienda','ubigeo_tienda.id','=','categoria_tienda.id_tienda')
-                    ->join('equipo','categoria_tienda.id','=','equipo.id_categoria_tienda')
-                    ->join('tiendas','tiendas.id','=','ubigeo_tienda.id_tienda')
-                    ->join('categorias','categorias.id','=','categoria_tienda.id_categoria')
-                    ->join('empresas','empresas.id','=','tiendas.id_empresa')
-                    ->join('marcas','marcas.id','=','equipo.id_marca')
+                   ->select('equipo.id', 'equipo.idequipo','equipo.url', 'equipo.modelo','equipo.descripcion','marcas.descripcion as descripcionMarca','tiendas.nombre as tienda','equipo.estado_equipo','tipo_equipos.descripcion as descripcionTipoEquipo','equipo.serie','empresas.nombre as empresa','categorias.descripcion as desPartida','areas.nombre as area')
+                    ->leftjoin('ubigeo_tienda','ubigeo_tienda.id','=','categoria_tienda.id_tienda')
+                    ->leftjoin('equipo','categoria_tienda.id','=','equipo.id_categoria_tienda')
+                    ->leftjoin('tiendas','tiendas.id','=','ubigeo_tienda.id_tienda')
+                    ->leftjoin('categorias','categorias.id','=','categoria_tienda.id_categoria')
+                    ->leftjoin('empresas','empresas.id','=','tiendas.id_empresa')
+                    ->leftjoin('marcas','marcas.id','=','equipo.id_marca')
                     ->leftjoin('tipo_equipos', 'tipo_equipos.id', '=', 'marcas.id_tipo_equipo')
+                    ->leftjoin('areas', 'areas.id', '=', 'equipo.id_area')
                 ->get();
         
       

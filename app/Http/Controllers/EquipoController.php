@@ -56,29 +56,6 @@ class EquipoController extends AppBaseController
                 ->get();
        
        
-    
-    //  $data=db::table('problema')
-    //             ->select(DB::raw('CONCAT(tipo_equipos.descripcion, ", serie ", equipo.serie, ", marca ", marcas.descripcion) AS equipo'),'equipo.estado_equipo','problema.id as idproblema','problema.codigo','problema.problema','users.name','problema.fecharegistro','tiendas.nombre as tienda','empresas.nombre as empresa','areas.nombre as area','equipo_incidencia.estado as estadoIncidencia','orden_servicio.estado as estadoOrden','personal_programacion.avance')
-    //             ->leftjoin('equipo','equipo.id','=','problema.id_equipo')
-    //             ->join('equipo_incidencia','equipo_incidencia.id_problema','=','problema.id')
-    //             ->join('marcas','marcas.id','=','equipo.id_marca')
-    //             ->join('tipo_equipos','tipo_equipos.id','=','marcas.id_tipo_equipo')
-    //             ->join('categoria_tienda','categoria_tienda.id','=','equipo.id_categoria_tienda')
-    //             ->join('tiendas','tiendas.id','=','categoria_tienda.id_tienda')
-    //              ->join('categorias','categorias.id','=','categoria_tienda.id_categoria')
-    //             ->join('empresas','empresas.id','=','tiendas.id_empresa')
-    //             ->leftjoin('users','users.id_empresa','=','empresas.id')
-    //             ->leftjoin('tipo_incidencias', 'tipo_incidencias.id', '=', 'equipo_incidencia.id_incidencia')
-    //             ->leftjoin('orden_servicio','equipo_incidencia.id','=','orden_servicio.id_incidencia')
-    //             ->leftjoin('programacions','programacions.id_orden','=','orden_servicio.id')
-    //             ->leftjoin('personal_programacion','personal_programacion.id_programacion','=','programacions.id')
-    //             ->leftjoin('areas','areas.id','=','equipo.id_area')
-    //             ->orderBy('equipo_incidencia.id', 'desc')
-    //             ->where('equipo_incidencia.estado','pendiente')
-    //             ->get();  
-    
-    
-         
         return datatables()->of($equipo)
             ->make(true);
            
@@ -87,14 +64,14 @@ class EquipoController extends AppBaseController
     {
 
       
-        DB::table('categoria_tienda')->insert([
+        // DB::table('categoria_tienda')->insert([
            
-            'id_categoria' => $request->id_partida,
-            'id_tienda' => $request->id_tienda,
+        //     'id_categoria' => $request->id_partida,
+        //     'id_tienda' => $request->id_tienda,
           
-        ]);
+        // ]);
 
-        $id_categoria_tienda=DB::table('categoria_tienda')->max('id'); 
+        // $id_categoria_tienda=DB::table('categoria_tienda')->max('id'); 
 
         DB::table('equipo')->insert([
             'idequipo' => $request->codigo,
@@ -110,7 +87,7 @@ class EquipoController extends AppBaseController
             'id_unidad' => $request->id_unidad,
             'cantidad' => $request->cantidad,
             'potencia' => $request->potencia,
-            'id_categoria_tienda' => $id_categoria_tienda,
+            'id_categoria_tienda' =>$request->id_partida,
             'id_area' => $request->id_area,
             'estado_equipo' =>'Inicio',
         ]);
@@ -124,41 +101,54 @@ class EquipoController extends AppBaseController
 
     public function ActualizarEquipoPrincipal(Request $request)
     {
+        
+       
         DB::table('equipo')
             ->where('id', '=', $request->id)
             ->update([
                 'idequipo' => $request->codigo,
                 'descripcion' => $request->descripcion,
                 'id_marca' => $request->id_marca,
-                'id_pais' => $request->id_ubicacion,
-                'peso' => $request->peso,
+                'id_categoria_tienda' => $request->id_partida,
+                'id_area' => $request->id_area,
+                'voltaje' => $request->peso_envio,
                 'modelo' => $request->modelo,
-                'peso_envio' => $request->peso_envio,
-                'estado_cliente' =>'1',
-                'altura' => $request->altura,
-                'ancho' => $request->ancho,
                 'largo' => $request->largo,
-                'umedimens' => $request->umedimens,
+                'id_unidad' => $request->id_unidad,
                 'cantidad' => $request->cantidad,
                 'potencia' => $request->potencia,
-                'id_empresa' => $request->id_empresa,
-                'estado_equipo' =>'Inicio',
-                'id_equipo_padre'=>$request->id_equipo_padre
+                'id_equipo_padre'=>$request->id_equipo_padre 
             ]);
+
+           
+
+
     }
     public function BuscarEquipoPrincipal(Request $request)
     {
 
-       $codigo=$request->codigo;
+       $id=$request->id;
 
-       $resultado=DB::table('equipo')
-                        ->select('equipo.id','equipo.descripcion','equipo.peso','equipo.idequipo','equipo.modelo','equipo.peso','equipo.umedimens','equipo.peso_envio','equipo.umedpeso','equipo.altura','equipo.ancho','equipo.largo','equipo.cantidad','equipo.potencia','equipo.estado_equipo','empresas.nombre as nombreEmpresa','equipo.id_empresa','equipo.id_marca','marcas.codigo','equipo.id_pais','paises.nombre as nombrePais','equipo.id_equipo_padre','tipo_equipos.descripcion as descripcionTipoEquipo')
-                        ->join('marcas', 'marcas.id', '=', 'equipo.id_marca')
-                        ->join('empresas', 'empresas.id', '=', 'equipo.id_empresa')
-                        ->join('paises', 'paises.id', '=', 'equipo.id_pais')
-                        ->join('tipo_equipos', 'tipo_equipos.id', '=', 'equipo.id_equipo_padre')
-                        ->where('equipo.idequipo',  $codigo)->get();
+      
+       $resultado =DB::table('categoria_tienda')
+                   ->select("*",'tipo_equipos.descripcion as descripcionTipo','marcas.descripcion as marcaDescripcion','tiendas.nombre as nombreTienda','tiendas.id as id_tienda','categorias.descripcion as partidaNombre','areas.nombre as areaNombre','unidad_medidas.description as nombreUnuidad')
+                    ->join('ubigeo_tienda','ubigeo_tienda.id','=','categoria_tienda.id_tienda')
+                    ->join('equipo','categoria_tienda.id','=','equipo.id_categoria_tienda')
+                    ->join('tiendas','tiendas.id','=','ubigeo_tienda.id_tienda')
+                    ->leftjoin('categorias','categorias.id','=','categoria_tienda.id_categoria')
+                    ->leftjoin('areas','areas.id','=','equipo.id_area')
+                    ->leftjoin('empresas','empresas.id','=','tiendas.id_empresa')
+                    ->leftjoin('marcas','marcas.id','=','equipo.id_marca')
+                    ->leftjoin('unidad_medidas','unidad_medidas.id','=','equipo.id_unidad')
+                    ->leftjoin('tipo_equipos', 'tipo_equipos.id', '=', 'marcas.id_tipo_equipo')
+                    ->where('equipo.id',  $id)->get();
 
+       // $resultado=DB::table('equipo')
+       //                  ->select("*",'tipo_equipos.descripcion as descripcionTipo','marcas.descripcion as marcaDescripcion')
+       //                   ->join('tipo_equipos','tipo_equipos.id','=','equipo.id_equipo_padre')
+       //                   ->join('marcas','marcas.id','=','equipo.id_marca')
+
+       //                  ->where('equipo.id',  $id)->get();
         
           return response(['data' => $resultado]);
 

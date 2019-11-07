@@ -312,8 +312,17 @@ class TiendaController extends AppBaseController
                     'direccion' => $request->direccion
                   )
             );
+
+        $id_tienda_Ubigeo=DB::table('ubigeo_tienda')->max('id');
+
+        DB::table('categoria_tienda')->insert(
+                array(
+                    'id_categoria' => $request->id_partida, 
+                    'id_tienda' => $id_tienda_Ubigeo,
+                  )
+            );
         
-        
+
     }
     public function eliminar_tienda_ubicacion($id)
     {
