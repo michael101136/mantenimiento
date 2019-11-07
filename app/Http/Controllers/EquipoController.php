@@ -298,7 +298,7 @@ class EquipoController extends AppBaseController
             ->join('marcas','marcas.id','=','equipo.id_marca')
             ->get();
 
-        // dd($listar);
+        dd($listar);
         $pdf = PDF::loadView('admin.reportes.inicio.equipos',compact('listar'));
         return $pdf->stream('historialcompleto.pdf');   
     }

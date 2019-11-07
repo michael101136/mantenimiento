@@ -30,18 +30,18 @@ class ProblemaController extends Controller
         {
            
          $data=DB::table('categoria_tienda')
-            ->select(DB::raw('CONCAT(tipo_equipos.descripcion, ", serie ", equipo.serie, ", marca ", marcas.descripcion) AS equipo'),'problema.id','problema.codigo','problema.problema','users.name','problema.fecharegistro','tiendas.nombre as tienda','empresas.nombre as empresa','areas.nombre as area')
-            ->join('tiendas','tiendas.id','=','categoria_tienda.id_tienda')
-            ->join('categorias','categorias.id','=','categoria_tienda.id_categoria')
-            ->join('empresas','empresas.id','=','tiendas.id_empresa')
-            ->join('equipo','categoria_tienda.id','=','equipo.id_categoria_tienda')
-            ->join('marcas','marcas.id','=','equipo.id_marca')
-            ->join('tipo_equipos', 'tipo_equipos.id', '=', 'marcas.id_tipo_equipo')
-            ->leftjoin('areas','areas.id','=','equipo.id_area')
-            ->join('problema', 'equipo.id', '=', 'problema.id_equipo')
-            ->join('users','users.id','=','problema.id_usuario')
-            ->where('problema.id_usuario',Auth::user()->id)
-            ->orderBy('problema.id','desc')
+                  ->select(DB::raw('CONCAT(tipo_equipos.descripcion, ", serie ", equipo.serie, ", marca ", marcas.descripcion) AS equipo'),'problema.id','problema.codigo','problema.problema','users.name','problema.fecharegistro','tiendas.nombre as tienda','empresas.nombre as empresa','areas.nombre as area')
+                  ->join('tiendas','tiendas.id','=','categoria_tienda.id_tienda')
+                  ->join('categorias','categorias.id','=','categoria_tienda.id_categoria')
+                  ->join('empresas','empresas.id','=','tiendas.id_empresa')
+                  ->join('equipo','categoria_tienda.id','=','equipo.id_categoria_tienda')
+                  ->join('marcas','marcas.id','=','equipo.id_marca')
+                  ->join('tipo_equipos', 'tipo_equipos.id', '=', 'marcas.id_tipo_equipo')
+                  ->leftjoin('areas','areas.id','=','equipo.id_area')
+                  ->join('problema', 'equipo.id', '=', 'problema.id_equipo')
+                  ->join('users','users.id','=','problema.id_usuario')
+                  ->where('problema.id_usuario',Auth::user()->id)
+                  ->orderBy('problema.id','desc')
             ->get();
           
      
@@ -53,14 +53,14 @@ class ProblemaController extends Controller
         {
           
           $data =DB::table('categoria_tienda')
-                   ->select(DB::raw('CONCAT(tipo_equipos.descripcion, ", serie ", equipo.serie, ", marca ", marcas.descripcion) AS equipo'),'problema.id','problema.codigo','problema.problema','users.name','problema.fecharegistro','tiendas.nombre as tienda','empresas.nombre as empresa','areas.nombre as area')
+                   ->select('equipo.descripcion as equipo','problema.id','problema.codigo','problema.problema','users.name','problema.fecharegistro','tiendas.nombre as tienda','empresas.nombre as empresa','areas.nombre as area')
                     ->join('ubigeo_tienda','ubigeo_tienda.id','=','categoria_tienda.id_tienda')
                     ->join('equipo','categoria_tienda.id','=','equipo.id_categoria_tienda')
                     ->join('tiendas','tiendas.id','=','ubigeo_tienda.id_tienda')
-                    ->join('categorias','categorias.id','=','categoria_tienda.id_categoria')
-                     ->join('areas','areas.id','=','equipo.id_area')
-                    ->join('empresas','empresas.id','=','tiendas.id_empresa')
-                    ->join('marcas','marcas.id','=','equipo.id_marca')
+                    ->leftjoin('categorias','categorias.id','=','categoria_tienda.id_categoria')
+                     ->leftjoin('areas','areas.id','=','equipo.id_area')
+                    ->leftjoin('empresas','empresas.id','=','tiendas.id_empresa')
+                    ->leftjoin('marcas','marcas.id','=','equipo.id_marca')
                     ->leftjoin('tipo_equipos', 'tipo_equipos.id', '=', 'marcas.id_tipo_equipo')
                     ->join('problema', 'equipo.id', '=', 'problema.id_equipo')
                     ->join('users','users.id','=','problema.id_usuario')
@@ -325,32 +325,24 @@ class ProblemaController extends Controller
     public function pdflistarproblemas()
     {
         
-        // $listar=DB::table('problema')
-        // ->select('problema.codigo','problema.problema','problema.fecharegistro','users.name','tipo_equipos.descripcion','empresas.nombre as nombreEmpresa','tiendas.nombre as nombreTienda')
-        // ->leftjoin('equipo','equipo.id','=','problema.id_equipo')
-        // ->join('equipo_incidencia','equipo_incidencia.id_problema','=','problema.id')
-        // ->join('marcas','marcas.id','=','equipo.id_marca')
-        // ->join('tipo_equipos','tipo_equipos.id','=','marcas.id_tipo_equipo')
-        // ->join('tiendas','tiendas.id','=','equipo.id_tienda')
-        // ->join('empresas','empresas.id','=','tiendas.id_empresa')
-        // ->join('users','users.id','=','problema.id_usuario')
-        // ->get();
+     
+
+         $listar =DB::table('categoria_tienda')
+                    ->select('equipo.descripcion','problema.codigo','problema.problema','problema.fecharegistro','users.name','empresas.nombre as nombreEmpresa','tiendas.nombre as nombreTienda','categorias.descripcion as partida','areas.nombre as area')
+                    ->join('ubigeo_tienda','ubigeo_tienda.id','=','categoria_tienda.id_tienda')
+                    ->join('equipo','categoria_tienda.id','=','equipo.id_categoria_tienda')
+                    ->join('tiendas','tiendas.id','=','ubigeo_tienda.id_tienda')
+                    ->leftjoin('categorias','categorias.id','=','categoria_tienda.id_categoria')
+                     ->leftjoin('areas','areas.id','=','equipo.id_area')
+                    ->leftjoin('empresas','empresas.id','=','tiendas.id_empresa')
+                    ->leftjoin('marcas','marcas.id','=','equipo.id_marca')
+                    ->leftjoin('tipo_equipos', 'tipo_equipos.id', '=', 'marcas.id_tipo_equipo')
+                    ->join('problema', 'equipo.id', '=', 'problema.id_equipo')
+                    ->join('users','users.id','=','problema.id_usuario')
+                    ->orderBy('problema.id','desc')
+                ->get(); 
         
-         $listar=db::table('problema')
-                 ->select('problema.codigo','problema.problema','problema.fecharegistro','users.name','tipo_equipos.descripcion','empresas.nombre as nombreEmpresa','tiendas.nombre as nombreTienda')
-                ->leftjoin('equipo','equipo.id','=','problema.id_equipo')
-                ->join('equipo_incidencia','equipo_incidencia.id_problema','=','problema.id')
-                ->join('marcas','marcas.id','=','equipo.id_marca')
-                ->join('tipo_equipos','tipo_equipos.id','=','marcas.id_tipo_equipo')
-                ->join('categoria_tienda','categoria_tienda.id','=','equipo.id_categoria_tienda')
-                ->join('tiendas','tiendas.id','=','categoria_tienda.id_tienda')
-                 ->join('categorias','categorias.id','=','categoria_tienda.id_categoria')
-                ->join('empresas','empresas.id','=','tiendas.id_empresa')
-                ->leftjoin('areas','areas.id','=','equipo.id_area')
-                ->join('users','users.id','=','problema.id_usuario')
-                ->orderBy('equipo_incidencia.id', 'desc')
-                ->get();  
-        
+
         $pdf = PDF::loadView('admin.reportes.inicio.problemas',compact('listar'));
         return $pdf->stream('problemas.pdf');  
     }

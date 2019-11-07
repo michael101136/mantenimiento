@@ -40,7 +40,7 @@
                       </li>
                     </ul>
                     <div class="clearfix"></div>
-                    GENERAR TICKET DE ATENCION
+                    GENERAR TICKET DE ATENCIONNNNNN
                         
                   </div>
                   <div class="x_content">
@@ -422,7 +422,7 @@ function busquedaFunction(titulo,opcion) {
                                    { data: 'nombreEmpresa', name: 'nombreEmpresa' },
                     
                                 { data: 'nombreTienda', name: 'nombreTienda' },
-                                { data: 'categoria', name: 'categoria' },
+                                { data: 'equipo', name: 'equipo' },
                     
                                 { data: 'problema', name: 'problema' },
   
